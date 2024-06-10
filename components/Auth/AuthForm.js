@@ -1,14 +1,16 @@
-import { Button, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Input from '../ui/Input';
 import { useState } from 'react';
+import Button from '../ui/Button';
 
 const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
   // (AuthContent에서)T/F 넘어옴, onSubmt 넘어옴
   //reducer로 처리 가능
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredName, setEnteredName] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [enteredConfirmPassword, setConfirmPassword] = useState('');
+  const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
+    const [enteredEmail, setEnteredEmail] = useState('');
+    const [enteredName, setEneteredName] = useState('');
+    const [enteredPassword, setEnteredPassword] = useState('');
+    const [enteredComfirmPassword, setEnteredConfirmPassword] = useState('');
 
   const {
     email: emailIsValid,
@@ -18,19 +20,19 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
   } = credentialsInvalid;
 
   //reducer로 처리 가능
-  const updateInputValueHandler = (inputType, enteredValue) => {
+ const updateInputValueHandler = (inputType, enteredValue) => {
     switch (inputType) {
       case 'email':
         setEnteredEmail(enteredValue);
         break;
       case 'name':
-        setEnteredName(enteredValue);
+        setEneteredName(enteredValue);
         break;
-      case 'Password':
+      case 'password':
         setEnteredPassword(enteredValue);
         break;
       case 'confirmPassword':
-        setConfirmPassword(enteredValue);
+        setEnteredConfirmPassword(enteredValue);
         break;
     }
   };
@@ -39,7 +41,7 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
     console.log('버튼 클릭됨! submit');
     //사용자의 입력 상태값을 객체로 포장해서 AuthContet에게 넘김
     //->부모쪽에서 유효성 검증 함
-    onsubmit({
+    onSubmit({
       email: enteredEmail,
       name: enteredName,
       password: enteredPassword,
@@ -66,11 +68,12 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
             label='이름'
             onUpdateValue={updateInputValueHandler.bind(this, 'name')}
             isInvalid={nameIsValid}
+            value={enteredName}
           />
         )}
         <Input
           label='비밀번호'
-          secure='secure'
+          secure
           onUpdateValue={updateInputValueHandler.bind(this, 'password')}
           isInvalid={passwordIsValid}
           value={enteredPassword}
@@ -84,13 +87,13 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
               'confirmPassword',
             )}
             isInvalid={passwordDontMatch}
-            value={enteredConfirmPassword}
+            value={enteredComfirmPassword}
           />
         )}
         {/* key와 value 같을 시 생략 가능 */}
-        <View style={StyleSheet.buttons}>
+        <View style={styles.buttons}>
           <Button onPress={submitHandler}>
-            {isLogin ? '로그인' : '회원가입'}
+            {isLogin ? '로그인' : '회원 가입'}
           </Button>
         </View>
       </View>
@@ -99,3 +102,9 @@ const AuthForm = ({ isLogin, onSubmit, credentialsInvalid }) => {
 };
 
 export default AuthForm;
+
+const styles = StyleSheet.create({
+  buttons: {
+    marginTop: 12,
+  },
+});

@@ -1,6 +1,5 @@
 import { Pressable, View, Text } from 'react';
 import { Colors } from '../../constants/styles';
-import { StyleSheet } from 'react-native';
 
 function FlatButton({ children, onPress }) {
   return (

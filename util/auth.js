@@ -1,12 +1,12 @@
-const AUTH_URL = 'http://127.0.0.1:8181/api/auth';
+const AUTH_URL = 'http://192.168.0.231:8181/api/auth';
 
 //async + await
 const authenticate = async (email, password) => {
-  const url = AUTH_URL + 'signin';
+  const url = AUTH_URL + '/signin';
   const res = await fetch(url, {
     //객체
     method: 'POST',
-    headers: { 'content-type': 'application/json' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       email,
       password,

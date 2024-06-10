@@ -1,11 +1,13 @@
-import React, { View, useState } from 'react';
+import React, { useState } from 'react';
+import { Alert, StyleSheet, View } from 'react-native';
 import AuthForm from './AuthForm';
 import FlatButton from '../ui/FlatButton';
-import { Alert } from 'react-native';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Colors } from '../../constants/styles';
+import { useNavigation } from '@react-navigation/native';
 
-const AuthContent = ({ onAuthenticate }) => {
-  const [isLogin, setIsLogin] = useState(true); //true 로그인 페이지 /false 비로그인
+const AuthContent = ({ onAuthenticate, isLogin }) => {
+  //const [isLogin, setIsLogin] = useState(true); //true 로그인 페이지 /false 비로그인 : true 지우고 부모에서 isLogin 받기
+  const navigation = useNavigation(); //react useNavigate
 
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     //유효성 검증
@@ -17,11 +19,11 @@ const AuthContent = ({ onAuthenticate }) => {
 
   const submitHandler = (credentials) => {
     let { email, name, password, confirmPassword } = credentials;
-    console.log('submitHandler: ', email);
+    console.log('submitHandler email: ', email);
 
     email = email.trim();
     password = password.trim();
-    const nameRegex = /^[가-힣]{2,4}$/;
+    const nameRegex = /^[가-힣]{2,5}$/;
 
     //실제로 적용하실 때는 각 입력 창마다 정규표현식으로 빡시게 검사하세요
     const emailIsValid = email.includes('@');
@@ -49,6 +51,15 @@ const AuthContent = ({ onAuthenticate }) => {
     onAuthenticate({ email, password, name });
   };
 
+  const switchAuthModeHandler = () => {
+    if (isLogin) {
+      //로그인 상태 T/F 여부
+      navigation.replace('Signup');
+    } else {
+      navigation.replace('Login');
+    }
+  };
+
   return (
     <View style={StyleSheet.authContent}>
       <AuthForm
@@ -57,7 +68,7 @@ const AuthContent = ({ onAuthenticate }) => {
         credentialsInvalid={credentialsInvalid}
       />
       <View>
-        <FlatButton>
+        <FlatButton onPress={switchAuthModeHandler}>
           {isLogin ? '회원가입 하기' : '로그인 화면 이동하기'}
         </FlatButton>
       </View>
